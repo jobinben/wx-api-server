@@ -59,7 +59,7 @@ export class AppController {
     } 
 
     // 构建要响应的 XML 数据
-    const responseXml = `<xml><ToUserName><![CDATA[${xmlData.fromusername[0]}]]></ToUserName><FromUserName><![CDATA[${xmlData.tousername[0]}]]></FromUserName><CreateTime>${Date.now()}</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[你好,回复消息中]]></Content></xml>`;
+    const responseXml = `<xml><ToUserName><![CDATA[${xmlData.fromusername[0]}]]></ToUserName><FromUserName><![CDATA[${xmlData.tousername[0]}]]></FromUserName><CreateTime>${Date.now()}</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[${replyTxt}]]></Content></xml>`;
 
     res.set('Content-Type', 'application/xml');
     res.send(responseXml);
