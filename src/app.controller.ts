@@ -53,30 +53,31 @@ export class AppController {
     switch (msgType) {
       case 'text': {
         const receiveMsg = xmlData?.content?.[0];
-        if (receiveMsg) {
+        if (receiveMsg && receiveMsg.length) {
           // 进群，发送二维码图片
-          if (receiveMsg.length && receiveMsg.includes('gpt')) {
-            const mediaId = 'xVfG8PVKKjvzzGiZ1dO0RMnEW3N8G69YKRpgnlzU39ZPN-s9ssF_3n8S6LxSkvvi'; // 图片id
+          if (receiveMsg.includes('gpt')) {
+            const mediaId =
+              'xVfG8PVKKjvzzGiZ1dO0RMnEW3N8G69YKRpgnlzU39ZPN-s9ssF_3n8S6LxSkvvi'; // 图片id
             // 构建要响应的 XML 数据
             const responseXml = `<xml><ToUserName><![CDATA[${xmlData.fromusername[0]}]]></ToUserName><FromUserName><![CDATA[${xmlData.tousername[0]}]]></FromUserName><CreateTime>${Date.now()}</CreateTime><MsgType><![CDATA[image]]></MsgType><Image><MediaId><![CDATA[${mediaId}]]></MediaId></Image></xml>`;
             res.set('Content-Type', 'application/xml');
             res.send(responseXml);
             return;
-          }
-
-          // 其他消息处理
-          if (receiveMsg.length > 30) {
-            replyTxt = '你发送的内容太长啦';
+          } else if (receiveMsg.includes('查体脂')) {
+            replyTxt = this.appService.getBodyFatRate(receiveMsg);
+          } else if (receiveMsg.includes('名称生成')) {
+            replyTxt = this.appService.extractNameAndNumber(receiveMsg);
           } else {
-            replyTxt= this.appService.extractNameAndNumber(receiveMsg);
+            replyTxt = `请问要什么服务呢？\n 1. 查体脂 身高180 体重70kg 年龄25 性别男 \n 2. 名称生成 周星星00000 \n 3. 输入gpt即可获得博主联系方式和加入交流群`;
           }
-        } 
+        }
         break;
       }
       case 'event': {
         const eventType = xmlData?.event?.[0];
         if (eventType === 'subscribe') {
-          replyTxt = '感谢关注～ 如需加入GPT交流群，请回复：gpt';
+          replyTxt =
+            '感谢关注～ \n 1. 如需加入GPT交流群，请回复：gpt \n 2. 给微信昵称加上上标电话号码，回复如：名称生成 周星星10086 \n 3. 给自己查体脂，回复如：查体脂 身高180 体重70kg 年龄25 性别男';
         }
         break;
       }
@@ -85,7 +86,6 @@ export class AppController {
         break;
       }
     }
-    
 
     // 构建要响应的 XML 数据
     const responseXml = `<xml><ToUserName><![CDATA[${xmlData.fromusername[0]}]]></ToUserName><FromUserName><![CDATA[${xmlData.tousername[0]}]]></FromUserName><CreateTime>${Date.now()}</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[${replyTxt}]]></Content></xml>`;
