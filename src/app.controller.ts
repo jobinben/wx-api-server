@@ -72,8 +72,10 @@ export class AppController {
             }
           } else if (receiveMsg.includes('号码上') || receiveMsg.includes('号码下')) {
             replyTxt = this.appService.extractNameAndNumber(receiveMsg);
+          } else if (receiveMsg.includes('mbti') || receiveMsg.includes('Mbti')) {
+            replyTxt = '免费的Mbti测试官网地址：https://www.16personalities.com/ch';
           } else {
-            replyTxt = `请问要什么服务呢？\n 1. 查体脂 身高180 体重65kg 年龄25 性别男 \n 2. 号码上 周星星13106601234 \n 3. 输入gpt即可获得博主联系方式和加入交流群`;
+            replyTxt = `请问要什么服务呢？\n 1. 查体脂 身高180 体重65kg 年龄25 性别男 \n 2. 号码上 周星星13106601234 \n 3. 输入gpt即可获得博主联系方式和加入交流群 \n 4. 查Mbti性格测试，回复：mbti`;
           }
         }
         break;
@@ -82,7 +84,7 @@ export class AppController {
         const eventType = xmlData?.event?.[0];
         if (eventType === 'subscribe') {
           replyTxt =
-            '感谢关注～ \n 1. 如需加入GPT交流群，请回复：gpt \n 2. 给微信昵称加上上标电话号码，回复如：号码上 周星星13106601234 \n 3. 给自己查体脂，回复如：查体脂 身高180 体重65kg 年龄25 性别男';
+            '感谢关注～ \n 1. 如需加入GPT交流群，请回复：gpt \n 2. 给微信昵称加上上标电话号码，回复如：号码上 周星星13106601234 \n 3. 给自己查体脂，回复如：查体脂 身高180 体重65kg 年龄25 性别男\n 4. 查Mbti性格测试，回复：mbti';
         }
         break;
       }
