@@ -73,8 +73,11 @@ export class AppService {
   extractNameAndNumber(text: string): string {
     const pattern = /([\u4e00-\u9fa5]+)(\d+)/g;
     let match;
+    const directRegex = /号码([上下])/;
+    const directMatch = text.match(directRegex);
+    const position = directMatch ? (directMatch[1] === '上' ? 'super' : 'sub') : 'super';
     while ((match = pattern.exec(text)) !== null) {
-      return this.convertToSuperSubScript(match[1], match[2], 'super');
+      return this.convertToSuperSubScript(match[1], match[2], position);
     }
     return '输入内容不符合';
   }
