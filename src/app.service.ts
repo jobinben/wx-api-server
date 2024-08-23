@@ -1,8 +1,10 @@
+import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 const crypto = require('crypto');
 
 @Injectable()
 export class AppService {
+  constructor(readonly httpService: HttpService) {}
   getHello(): string {
     return 'Hello World!';
   }
@@ -75,7 +77,11 @@ export class AppService {
     let match;
     const directRegex = /号码([上下])/;
     const directMatch = text.match(directRegex);
-    const position = directMatch ? (directMatch[1] === '上' ? 'super' : 'sub') : 'super';
+    const position = directMatch
+      ? directMatch[1] === '上'
+        ? 'super'
+        : 'sub'
+      : 'super';
     while ((match = pattern.exec(text)) !== null) {
       return this.convertToSuperSubScript(match[1], match[2], position);
     }
@@ -158,10 +164,35 @@ export class AppService {
     return `当前体脂率: ${bodyFatRate}%\n正常体脂率范围: ${normalBodyFatRange.min}%-${normalBodyFatRange.max}%\n标准体重: ${standardWeight}（kg）\n正常标准体重范围: ${normalWeightRange}\n健康风险: ${healthRisk}\n身材管理建议: ${managementAdvice}`;
   }
 
-
   getBodyFatRate(input: string): string {
     const { height, weight, age, gender } = this.parseUserInput(input);
     return this.calculateMetrics({ height, weight, age, gender });
   }
 
+  // 增加AI绘画次数
+  async addAIPaintingCount(input: string) {
+    const word = input.slice(2).trim();
+    if (!word) {
+      return false;
+    }
+
+    try {
+      await this.httpService
+        .post(
+          'http://localhost:3001/reSetPicNum',
+          {
+            nick: word,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        )
+        .toPromise();
+    } catch (err) {
+      console.log(`addAIPaintingCount [err]: ${err}`);
+    }
+    return true;
+  }
 }

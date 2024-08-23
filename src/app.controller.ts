@@ -64,16 +64,28 @@ export class AppController {
             res.send(responseXml);
             return;
           } else if (receiveMsg.includes('查体脂')) {
-            const isReject = !receiveMsg.includes('身高') || !receiveMsg.includes('体重');
+            const isReject =
+              !receiveMsg.includes('身高') || !receiveMsg.includes('体重');
             if (isReject) {
-              replyTxt = '请输入相关信息如：查体脂 身高180 体重65kg 年龄25 性别男';
+              replyTxt =
+                '请输入相关信息如：查体脂 身高180 体重65kg 年龄25 性别男';
             } else {
               replyTxt = this.appService.getBodyFatRate(receiveMsg);
             }
-          } else if (receiveMsg.includes('号码上') || receiveMsg.includes('号码下')) {
+          } else if (
+            receiveMsg.includes('号码上') ||
+            receiveMsg.includes('号码下')
+          ) {
             replyTxt = this.appService.extractNameAndNumber(receiveMsg);
-          } else if (receiveMsg.includes('mbti') || receiveMsg.includes('Mbti')) {
-            replyTxt = '免费的Mbti测试官网地址：https://www.16personalities.com/ch';
+          } else if (
+            receiveMsg.includes('mbti') ||
+            receiveMsg.includes('Mbti')
+          ) {
+            replyTxt =
+              '免费的Mbti测试官网地址：https://www.16personalities.com/ch';
+          } else if (receiveMsg.includes('解锁')) {
+            this.appService.addAIPaintingCount(receiveMsg);
+            replyTxt = '已经成功增加10次绘画次数';
           } else {
             replyTxt = `请问要什么服务呢？\n 1. 查体脂 身高180 体重65kg 年龄25 性别男 \n 2. 号码上 周星星13106601234 \n 3. 输入gpt即可获得博主联系方式和加入交流群 \n 4. 查Mbti性格测试，回复：mbti`;
           }
