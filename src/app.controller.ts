@@ -86,6 +86,10 @@ export class AppController {
           } else if (receiveMsg.includes('解锁')) {
             this.appService.addAIPaintingCount(receiveMsg);
             replyTxt = '已经成功增加10次绘画次数';
+          } else if (receiveMsg.includes('steam')) {
+            replyTxt = 'Steam状态查询：https://steamstat.us/';
+          } else if (receiveMsg.includes('黑神话')) {
+            replyTxt = '《黑神话：悟空》官网：https://www.heishenhua.com/';
           } else {
             replyTxt = `请问要什么服务呢？\n 1. 查体脂 身高180 体重65kg 年龄25 性别男 \n 2. 号码上 周星星13106601234 \n 3. 输入gpt即可获得博主联系方式和加入交流群 \n 4. 查Mbti性格测试，回复：mbti`;
           }
