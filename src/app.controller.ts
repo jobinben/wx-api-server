@@ -44,7 +44,7 @@ export class AppController {
 
   @HttpCode(200)
   @Post('wxMsg')
-  handleWxMsg(@Body() data, @Res() res) {
+  async handleWxMsg(@Body() data, @Res() res) {
     const xmlData = data.xml; // 获取已经解析后的 XML 数据
     console.log('xmlData: ', xmlData);
 
@@ -52,10 +52,10 @@ export class AppController {
     const msgType = xmlData?.msgtype?.[0]; // 小心类型
     switch (msgType) {
       case 'text': {
-        const receiveMsg = xmlData?.content?.[0];
+        const receiveMsg: string = xmlData?.content?.[0];
         if (receiveMsg && receiveMsg.length) {
           // 进群，发送二维码图片
-          if (receiveMsg.includes('gpt')) {
+          if (receiveMsg.trim()?.startsWith('加群')) {
             const mediaId =
               'xVfG8PVKKjvzzGiZ1dO0RMnEW3N8G69YKRpgnlzU39ZPN-s9ssF_3n8S6LxSkvvi'; // 图片id
             // 构建要响应的 XML 数据
@@ -77,10 +77,7 @@ export class AppController {
             receiveMsg.includes('号码下')
           ) {
             replyTxt = this.appService.extractNameAndNumber(receiveMsg);
-          } else if (
-            receiveMsg.includes('mbti') ||
-            receiveMsg.includes('Mbti')
-          ) {
+          } else if (receiveMsg?.toLocaleLowerCase()?.includes('mbti')) {
             replyTxt =
               '免费的Mbti测试官网地址：https://www.16personalities.com/ch';
           } else if (receiveMsg.includes('解锁')) {
@@ -90,8 +87,10 @@ export class AppController {
             replyTxt = 'Steam状态查询：https://steamstat.us/';
           } else if (receiveMsg.includes('黑神话')) {
             replyTxt = '《黑神话：悟空》官网：https://www.heishenhua.com/';
+          } else if (receiveMsg.trim()?.startsWith('查名字')) {
+            replyTxt = await this.appService.GetNameMeaning(receiveMsg);
           } else {
-            replyTxt = `请问要什么服务呢？\n 1. 查体脂 身高180 体重65kg 年龄25 性别男 \n 2. 号码上 周星星13106601234 \n 3. 输入gpt即可获得博主联系方式和加入交流群 \n 4. 查Mbti性格测试，回复：mbti`;
+            replyTxt = `请问要什么服务呢？\n 1. 查体脂 身高180 体重65kg 年龄25 性别男 \n 2. 号码上 周星星13106601234 \n 3. 输入“加群”即可获得博主联系方式和加入交流群 \n 4. 查Mbti性格测试，回复：mbti \n 5. 查名字解析，回复格式如：查名字 王富贵'`;
           }
         }
         break;
@@ -100,7 +99,7 @@ export class AppController {
         const eventType = xmlData?.event?.[0];
         if (eventType === 'subscribe') {
           replyTxt =
-            '感谢关注～ \n 1. 如需加入GPT交流群，请回复：gpt \n 2. 给微信昵称加上上标电话号码，回复如：号码上 周星星13106601234 \n 3. 给自己查体脂，回复如：查体脂 身高180 体重65kg 年龄25 性别男\n 4. 查Mbti性格测试，回复：mbti';
+            '感谢关注～ \n 1. 如需加入交流群，请回复：加群 \n 2. 给微信昵称加上上标电话号码，回复如：号码上 周星星13106601234 \n 3. 给自己查体脂，回复如：查体脂 身高180 体重65kg 年龄25 性别男\n 4. 查Mbti性格测试，回复：mbti \n 5. 查名字解析，回复格式如：查名字 王富贵';
         }
         break;
       }
