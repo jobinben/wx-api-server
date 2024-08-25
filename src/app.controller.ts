@@ -115,4 +115,11 @@ export class AppController {
     res.set('Content-Type', 'application/xml');
     res.send(responseXml);
   }
+
+  @Post('test')
+  async test(@Body() data, @Res() res) {
+    const name = data.name;
+    const result = await this.appService.GetNameMeaning(name);
+    res.send(result);
+  }
 }
