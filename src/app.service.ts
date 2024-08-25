@@ -198,7 +198,7 @@ export class AppService {
 
   // 获取名字解析意思
   async GetNameMeaning(input: string): Promise<string | null> {
-    const word = input.slice(2).trim();
+    const word = input.slice(3).trim();
     if (!word) {
       return '请输入正确格式， 后面需要加上你的名字，如：查名字 王富贵';
     }
