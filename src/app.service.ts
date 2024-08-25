@@ -1,14 +1,10 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { ChatBotService } from './service/chat-bot.service';
 const crypto = require('crypto');
 
 @Injectable()
 export class AppService {
-  constructor(
-    readonly httpService: HttpService,
-    readonly chatBotService: ChatBotService,
-  ) {}
+  constructor(readonly httpService: HttpService) {}
   getHello(): string {
     return 'Hello World!';
   }
@@ -201,17 +197,32 @@ export class AppService {
   }
 
   // 获取名字解析意思
-  async GetNameMeaning(input: string) {
+  async GetNameMeaning(input: string): Promise<string | null> {
     const word = input.slice(2).trim();
     if (!word) {
       return '请输入正确格式， 后面需要加上你的名字，如：查名字 王富贵';
     }
-    const result = await this.chatBotService.fetchChatGPTByName(word);
-
-    if (!result) {
-      return '查询失败，请稍后2分钟再试';
+    try {
+      const result = await this.httpService
+        .post(
+          'http://localhost:3001/getName',
+          {
+            name: word,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        )
+        .toPromise();
+      if (!result?.data?.name) {
+        return '查询失败，请稍后2分钟再试';
+      }
+      return result.data.name;
+    } catch (err) {
+      console.log(`GetNameMeaning [err]: ${err}`);
+      return '查询异常了，请联系博主';
     }
-
-    return result;
   }
 }
