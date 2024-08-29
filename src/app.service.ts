@@ -225,4 +225,36 @@ export class AppService {
       return '查询异常了，请联系博主';
     }
   }
+
+  extractPhoneNumber(input) {
+    // 正则表达式：匹配"vip"后面跟着空格和11位数字的电话号码
+    const regex = /vip\s*(\d{11})/i;
+
+    // 使用正则表达式查找匹配
+    const match = input.match(regex);
+
+    // 如果匹配成功，返回电话号码，否则返回null
+    return match ? match[1] : null;
+  }
+
+  // 优酷VIP领取
+  async getYouKuVip(input: string): Promise<string | null> {
+    const number = this.extractPhoneNumber(input);
+    if (!number) {
+      return '请输入正确格式，后面需要加上你的手机号，如：vip 13800138000';
+    }
+    try {
+      const result = await this.httpService
+        .get(`http://fljd.tinghongzz.com/api/Welfare/YouKuDay?phone=${number}`)
+        .toPromise();
+      if (result.data?.Status == '200') {
+        return '领取成功，请登录优酷APP查看~ (需要领取更多视频的VIP，请回复关键字：svip)';
+      } else {
+        return '领取失败哦！请勿重复领取！想领取更多vip，请回复关键字：svip';
+      }
+    } catch (err) {
+      console.log(`getYouKuVip [err]: ${err}`);
+      return '领取失败，留言即可，后续博主会处理';
+    }
+  }
 }
