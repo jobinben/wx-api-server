@@ -90,7 +90,10 @@ export class AppController {
           } else if (receiveMsg.trim()?.startsWith('查名字')) {
             replyTxt = await this.appService.GetNameMeaning(receiveMsg);
           } else if (receiveMsg.trim()?.toLocaleLowerCase().startsWith('vip')) {
-            replyTxt = await this.appService.getYouKuVip(receiveMsg);
+            replyTxt = await this.appService.getYouKuVip(
+              receiveMsg,
+              xmlData.tousername[0],
+            );
           } else if (
             receiveMsg.trim()?.toLocaleLowerCase().startsWith('svip')
           ) {
@@ -126,7 +129,7 @@ export class AppController {
   @Post('test')
   async test(@Body() data, @Res() res) {
     const phone = data.phone;
-    const result = await this.appService.getYouKuVip(phone);
+    const result = await this.appService.getYouKuVip(phone, 'test_open_id');
     res.send(result);
   }
 }
