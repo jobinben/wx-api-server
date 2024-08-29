@@ -89,6 +89,13 @@ export class AppController {
             replyTxt = '《黑神话：悟空》官网：https://www.heishenhua.com/';
           } else if (receiveMsg.trim()?.startsWith('查名字')) {
             replyTxt = await this.appService.GetNameMeaning(receiveMsg);
+          } else if (receiveMsg.trim()?.toLocaleLowerCase().startsWith('vip')) {
+            replyTxt = await this.appService.getYouKuVip(receiveMsg);
+          } else if (
+            receiveMsg.trim()?.toLocaleLowerCase().startsWith('svip')
+          ) {
+            replyTxt =
+              'qq音乐+腾讯vip+优酷+爱奇艺vip活动合集,请手动领取：https://pan.quark.cn/s/0582ac9c5ac4';
           } else {
             replyTxt = `请问要什么服务呢？\n 1. 查体脂 身高180 体重65kg 年龄25 性别男 \n 2. 号码上 周星星13106601234 \n 3. 输入“加群”即可获得博主联系方式和加入交流群 \n 4. 查Mbti性格测试，回复：mbti \n 5. 查名字解析，回复格式如：查名字 王富贵'`;
           }
@@ -118,8 +125,8 @@ export class AppController {
 
   @Post('test')
   async test(@Body() data, @Res() res) {
-    const name = data.name;
-    const result = await this.appService.GetNameMeaning(name);
+    const phone = data.phone;
+    const result = await this.appService.getYouKuVip(phone);
     res.send(result);
   }
 }
