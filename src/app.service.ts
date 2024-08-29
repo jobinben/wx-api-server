@@ -238,20 +238,22 @@ export class AppService {
   }
 
   // 优酷VIP领取
-  async getYouKuVip(input: string): Promise<string | null> {
+  receiveVipUser = new Set();
+  async getYouKuVip(input: string, oid: string): Promise<string | null> {
     const number = this.extractPhoneNumber(input);
     if (!number) {
       return '请输入正确格式，后面需要加上你的手机号，如：vip 13800138000';
     }
-    // if (this.receiveVipUser.has(oid)) {
-    //   return '单人每天只能领取一次哦～，但可以分享给其他朋友领取哦！想领取更多vip，请回复关键字：svip';
-    // }
+    if (this.receiveVipUser.has(oid)) {
+      return '单人每天只能领取一次哦～，但可以分享给其他朋友领取哦！想领取更多vip，请回复关键字：svip';
+    }
     try {
       const result = await this.httpService
         .get(`http://fljd.tinghongzz.com/api/Welfare/YouKuDay?phone=${number}`)
         .toPromise();
       if (result.data?.Status == '200') {
-        // this.receiveVipUser.add(oid); // 成功领取一次，不能重新领
+        this.receiveVipUser.add(oid); // 成功领取一次，不能重新领
+        console.log(`${number} - ${oid}`);
         return '领取成功，请登录优酷APP查看~ (需要领取更多视频的VIP，请回复关键字：svip)';
       } else {
         return '领取失败哦！请勿重复领取！想领取更多vip，请回复关键字：svip';
