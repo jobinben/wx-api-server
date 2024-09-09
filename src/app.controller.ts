@@ -86,7 +86,7 @@ export class AppController {
           } else if (receiveMsg.includes('steam')) {
             replyTxt = 'Steam状态查询：https://steamstat.us/';
           } else if (receiveMsg.includes('黑神话')) {
-            replyTxt = '《黑神话：悟空》官网：https://www.heishenhua.com/';
+            replyTxt = '下载链接：https://pan.quark.cn/s/49472714034f';
           } else if (receiveMsg.trim()?.startsWith('查名字')) {
             replyTxt = await this.appService.GetNameMeaning(receiveMsg);
           } else if (receiveMsg.trim()?.toLocaleLowerCase().startsWith('vip')) {
