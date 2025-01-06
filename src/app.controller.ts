@@ -85,22 +85,12 @@ export class AppController {
             replyTxt = '已经成功增加10次绘画次数';
           } else if (receiveMsg.includes('steam')) {
             replyTxt = 'Steam状态查询：https://steamstat.us/';
-          } else if (receiveMsg.includes('黑神话')) {
-            replyTxt = '下载链接：https://pan.quark.cn/s/49472714034f';
           } else if (receiveMsg.trim()?.startsWith('查名字')) {
             replyTxt = await this.appService.GetNameMeaning(receiveMsg);
-          } else if (receiveMsg.trim()?.toLocaleLowerCase().startsWith('vip')) {
-            replyTxt = await this.appService.getYouKuVip(
-              receiveMsg,
-              xmlData.fromusername[0],
-            );
-          } else if (
-            receiveMsg.trim()?.toLocaleLowerCase().startsWith('svip')
-          ) {
-            replyTxt =
-              'qq音乐+腾讯vip+优酷+爱奇艺vip活动合集,请手动领取：https://pan.quark.cn/s/0582ac9c5ac4';
+          } else if (receiveMsg.trim()?.startsWith('$')) {
+            replyTxt = await this.appService.getDeepSeekReply(receiveMsg);
           } else {
-            replyTxt = `请问要什么服务呢？\n 1. 查体脂 身高180 体重65kg 年龄25 性别男 \n 2. 号码上 周星星13106601234 \n 3. 输入“加群”即可获得博主联系方式和加入交流群 \n 4. 查Mbti性格测试，回复：mbti \n 5. 查名字解析，回复格式如：查名字 王富贵'`;
+            replyTxt = `请问要什么服务呢？\n 1. 查体脂 身高180 体重65kg 年龄25 性别男 \n 2. 号码上 周星星13106601234 \n 3. 输入“加群”即可获得博主联系方式和加入交流群 \n 4. 查Mbti性格测试，回复：mbti \n 5. 查名字解析，回复格式如：查名字 王富贵 \n 6. 以"$"符号开头，可以使用DeepSeek对话，如："$帮我写一份小红书文案"`;
           }
         }
         break;
@@ -109,7 +99,7 @@ export class AppController {
         const eventType = xmlData?.event?.[0];
         if (eventType === 'subscribe') {
           replyTxt =
-            '感谢关注～ \n 1. 如需加入交流群，请回复：加群 \n 2. 给微信昵称加上上标电话号码，回复如：号码上 周星星13106601234 \n 3. 给自己查体脂，回复如：查体脂 身高180 体重65kg 年龄25 性别男\n 4. 查Mbti性格测试，回复：mbti \n 5. 查名字解析，回复格式如：查名字 王富贵';
+            '感谢关注～ \n 1. 如需加入交流群，请回复：加群 \n 2. 给微信昵称加上上标电话号码，回复如：号码上 周星星13106601234 \n 3. 给自己查体脂，回复如：查体脂 身高180 体重65kg 年龄25 性别男\n 4. 查Mbti性格测试，回复：mbti \n 5. 查名字解析，回复格式如：查名字 王富贵、\n 6. 以"$"符号开头，可以使用DeepSeek对话，如："$帮我写一份小红书文案"';
         }
         break;
       }
