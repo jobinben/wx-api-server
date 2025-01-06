@@ -196,6 +196,33 @@ export class AppService {
     return true;
   }
 
+  // DeepSeek回复
+  async getDeepSeekReply(input: string): Promise<string | null> {
+    const word = input.slice(1).trim();
+    try {
+      const result = await this.httpService
+        .post(
+          'http://localhost:3001/deepSeek',
+          {
+            msg: word,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        )
+        .toPromise();
+      if (!result?.data?.content) {
+        return '请求失败，请稍后1分钟再试';
+      }
+      return result.data.content;
+    } catch (err) {
+      console.log(`getDeepSeekReply [err]: ${err}`);
+      return '请求异常了，请联系博主';
+    }
+  }
+
   // 获取名字解析意思
   async GetNameMeaning(input: string): Promise<string | null> {
     const word = input.slice(3).trim();
