@@ -78,8 +78,7 @@ export class AppController {
           ) {
             replyTxt = this.appService.extractNameAndNumber(receiveMsg);
           } else if (receiveMsg?.toLocaleLowerCase()?.includes('mbti')) {
-            replyTxt =
-              '免费的Mbti测试官网地址：https://www.16personalities.com/ch  (打不开时，请使用浏览器打开)';
+            replyTxt = '免费的Mbti测试官网地址：https://chatgpi.cn/mbti/';
           } else if (receiveMsg.includes('解锁')) {
             this.appService.addAIPaintingCount(receiveMsg);
             replyTxt = '已经成功增加10次绘画次数';
