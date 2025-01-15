@@ -57,7 +57,7 @@ export class AppController {
           // 进群，发送二维码图片
           if (
             receiveMsg.trim()?.startsWith('加群') ||
-            receiveMsg.trim()?.startsWith('订阅')
+            receiveMsg.trim()?.includes('订阅')
           ) {
             const mediaId =
               'xVfG8PVKKjvzzGiZ1dO0RMnEW3N8G69YKRpgnlzU39ZPN-s9ssF_3n8S6LxSkvvi'; // 图片id
