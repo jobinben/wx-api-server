@@ -86,6 +86,9 @@ export class AppController {
           } else if (receiveMsg?.toLocaleLowerCase()?.includes('gpt')) {
             replyTxt =
               'ChatGPT模型使用统计插件地址：https://chromewebstore.google.com/detail/chatgpt-degrade-checker-%E9%99%8D/inidgeckbobnafenlmlgfbeoijiamepm';
+          } else if (receiveMsg?.toLocaleLowerCase()?.includes('grok')) {
+            replyTxt =
+              'Grok3次数查询统计工具：https://chromewebstore.google.com/detail/grok-rate-limits/alfhaokdckjioipagadidpbldgfabgjp';
           } else if (receiveMsg.includes('解锁')) {
             this.appService.addAIPaintingCount(receiveMsg);
             replyTxt = '已经成功增加10次绘画次数';
