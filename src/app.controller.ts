@@ -57,7 +57,8 @@ export class AppController {
           // 进群，发送二维码图片
           if (
             receiveMsg.trim()?.startsWith('加群') ||
-            receiveMsg.trim()?.includes('订阅')
+            receiveMsg.trim()?.includes('订阅') ||
+            receiveMsg.trim()?.includes('降智')
           ) {
             const mediaId =
               'xVfG8PVKKjvzzGiZ1dO0RMnEW3N8G69YKRpgnlzU39ZPN-s9ssF_3n8S6LxSkvvi'; // 图片id
@@ -82,6 +83,9 @@ export class AppController {
             replyTxt = this.appService.extractNameAndNumber(receiveMsg);
           } else if (receiveMsg?.toLocaleLowerCase()?.includes('mbti')) {
             replyTxt = '免费的Mbti测试官网地址：https://chatgpi.cn/mbti/';
+          } else if (receiveMsg?.toLocaleLowerCase()?.includes('gpt')) {
+            replyTxt =
+              'ChatGPT模型使用统计插件地址：https://chromewebstore.google.com/detail/chatgpt-degrade-checker-%E9%99%8D/inidgeckbobnafenlmlgfbeoijiamepm';
           } else if (receiveMsg.includes('解锁')) {
             this.appService.addAIPaintingCount(receiveMsg);
             replyTxt = '已经成功增加10次绘画次数';
@@ -92,7 +96,7 @@ export class AppController {
           } else if (receiveMsg.trim()?.startsWith('$')) {
             replyTxt = await this.appService.getDeepSeekReply(receiveMsg);
           } else {
-            replyTxt = `请问要什么服务呢？\n 1. 查体脂 身高180 体重65kg 年龄25 性别男 \n 2. 号码上 周星星18927901285 \n 3. 输入“加群”即可获得博主联系方式和加入交流群 \n 4. 查Mbti性格测试，回复：mbti \n 5. 查名字解析，回复格式如：查名字 王富贵 \n 6. 以"$"符号开头，可以使用DeepSeek对话，如："$帮我写一份小红书文案"`;
+            replyTxt = `请问要什么服务呢？\n 1. 查体脂 身高180 体重65kg 年龄25 性别男 \n 2. 号码上 周星星18927901285 \n 3. 输入“加群”即可获得【博主联系方式】或【加入交流群】 \n 4. 查Mbti性格测试，回复：mbti \n 5. 查名字解析，回复格式如：查名字 王富贵`;
           }
         }
         break;
